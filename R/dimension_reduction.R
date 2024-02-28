@@ -77,6 +77,7 @@ RunSVD.default <- function(
   verbose = TRUE,
   irlba.work = n * 3,
   tol = 1e-05,
+  slot = "data",
   ...
 ) {
   if (is.null(x = rownames(x = object))) {
@@ -145,12 +146,13 @@ RunSVD.Assay <- function(
   reduction.key = "LSI_",
   scale.max = NULL,
   verbose = TRUE,
+  slot = "data",
   ...
 ) {
   features <- SetIfNull(x = features, y = VariableFeatures(object = object))
   data.use <- GetAssayData(
     object = object,
-    slot = "data"
+    slot = slot,
   )[features, ]
   reduction.data <- RunSVD(
     object = data.use,
@@ -160,6 +162,7 @@ RunSVD.Assay <- function(
     reduction.key = reduction.key,
     scale.max = scale.max,
     verbose = verbose,
+    slot = slot,
     ...
   )
   return(reduction.data)
@@ -184,6 +187,7 @@ RunSVD.StdAssay <- function(
     reduction.key = "LSI_",
     scale.max = NULL,
     verbose = TRUE,
+    slot = slot,
     ...
 ) {
   RunSVD.Assay(
@@ -194,6 +198,7 @@ RunSVD.StdAssay <- function(
     reduction.key = reduction.key,
     scale.max = scale.max,
     verbose = verbose,
+    slot = slot,
     ...
   )
 }
@@ -217,6 +222,7 @@ RunSVD.Seurat <- function(
   reduction.name = "lsi",
   scale.max = NULL,
   verbose = TRUE,
+  slot = "data",
   ...
 ) {
   assay <- SetIfNull(x = assay, y = DefaultAssay(object = object))
@@ -229,6 +235,7 @@ RunSVD.Seurat <- function(
     reduction.key = reduction.key,
     scale.max = scale.max,
     verbose = verbose,
+    slot = slot,
     ...
   )
   object[[reduction.name]] <- reduction.data
